@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Cell from '../Cell/Cell';
+import styles from './Grid.scss';
 
 class Grid extends Component {
   constructor(props) {

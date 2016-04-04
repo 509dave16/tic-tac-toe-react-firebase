@@ -1,4 +1,4 @@
-import styles from '../../App.scss';
+import styles from './Game.scss';
 import React, {Component} from 'react';
 import Firebase from 'firebase';
 import Cell from '../../Utility/Cell';
@@ -71,12 +71,12 @@ class Game extends Component {
       <div>
         <h1>Tic Tac Toe</h1>
         <GameType types={['OnlineHost','OnlineGuest','LocalHost']} setGameType={this.setGameType}/>
-        <div className={this.state.showJoinSessionForm ? '' : 'hidden'}>
+        <div className={this.state.showJoinSessionForm ? '' : styles.hideElement}>
           <SessionForm submitHandler={this.joinSession}/>
         </div>
-        <h2 className={this.state.session ? '' : 'hidden'}>Session: {this.state.session}</h2>
-        <h2 className={this.player ? '' : 'hidden'}>Player: {this.player}</h2>
-        <h2 className={this.state.gameStatus ? '' : 'hidden'}>Game Status: {this.state.gameStatus}</h2>
+        <h2 className={this.state.session ? '' : styles.hideElement}>Session: {this.state.session}</h2>
+        <h2 className={this.player ? '' : styles.hideElement}>Player: {this.player}</h2>
+        <h2 className={this.state.gameStatus ? '' : styles.hideElement}>Game Status: {this.state.gameStatus}</h2>
         <Grid grid={this.state.grid} attemptTurn={this.attemptTurn}/>
       </div>
     );

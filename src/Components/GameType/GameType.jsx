@@ -1,7 +1,9 @@
+import styles from './GameType.scss';
 import React, {Component} from 'react';
 
 class GameType extends Component {
   constructor(props) {
+    console.log(styles.gameTypeList);
     super(props);
     this.onClick = this.onClick.bind(this);
   }
@@ -12,11 +14,11 @@ class GameType extends Component {
 
   render() {
     return (
-      <ul>
+      <div className={styles.gameTypeList}>
         {this.props.types.map((type, index) => {
-          return <li key={index} onClick={this.onClick}>{type}</li>
+          return <button key={index} onClick={this.onClick}>{type}</button>
         })}
-      </ul>
+      </div>
     );
   }
 }
