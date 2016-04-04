@@ -1,28 +1,28 @@
 import React, {Component} from 'react';
 
-class Text extends Component {
+class SessionForm extends Component {
   constructor(props) {
     super(props);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
-  onSubmit(e) {
+  onClick(e) {
     e.preventDefault();
-    var blah = 'blah blah';
     this.props.submitHandler(this.refs.session.value);
   }
 
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
+      <form>
         <input ref='session' type="text" />
+        <button onClick={this.onClick}>Join Session</button>
       </form>
     );
   }
 }
 
-Text.propTypes = {
+SessionForm.propTypes = {
   submitHandler: React.PropTypes.func.isRequired
 };
 
-export default Text
+export default SessionForm

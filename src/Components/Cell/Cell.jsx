@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 class Cell extends Component {
   constructor(props) {
-    //props.mark = props.mark ? props.mark : '';
     super(props);
     this.onClick = this.onClick.bind(this);
   }

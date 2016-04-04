@@ -7,7 +7,6 @@ class GameType extends Component {
   }
 
   onClick(e) {
-    var blah = 'blah blah';
     this.props.setGameType(e.target.innerText);
   }
   

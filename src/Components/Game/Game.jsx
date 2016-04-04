@@ -4,7 +4,7 @@ import Firebase from 'firebase';
 import Cell from '../../Utility/Cell';
 import Grid from '../Grid/Grid';
 import GameType from '../GameType/GameType';
-import Text from '../Text/Text';
+import SessionForm from '../SessionForm/SessionForm';
 import generateSets from '../../Utility/SetGenerator'
 import ComponentUtility from '../../Utility/Component';
 
@@ -70,11 +70,12 @@ class Game extends Component {
       <div>
         <h1>Tic Tac Toe</h1>
         <GameType types={['OnlineHost','OnlineGuest','LocalHost']} setGameType={this.setGameType}/>
-        <h2>{this.state.session}</h2>
-        <h2 className={this.state.gameStatus ? '' : 'hidden'}>{this.state.gameStatus}</h2>
-        <div  className={this.state.showJoinSessionForm ? '' : 'hidden'}>
-          <Text submitHandler={this.joinSession}/>
+        <div className={this.state.showJoinSessionForm ? '' : 'hidden'}>
+          <SessionForm submitHandler={this.joinSession}/>
         </div>
+        <h2 className={this.state.session ? '' : 'hidden'}>Session: {this.state.session}</h2>
+        <h2 className={this.player ? '' : 'hidden'}>Player: {this.player}</h2>
+        <h2 className={this.state.gameStatus ? '' : 'hidden'}>{this.state.gameStatus}</h2>
         <Grid grid={this.state.grid} attemptTurn={this.attemptTurn}/>
       </div>
     );
