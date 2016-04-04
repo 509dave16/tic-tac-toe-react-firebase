@@ -14,7 +14,7 @@ class SessionForm extends Component {
   render() {
     return (
       <form>
-        <input ref='session' type="text" />
+        <input ref='session' type="text"/>
         <button onClick={this.onClick}>Join Session</button>
       </form>
     );

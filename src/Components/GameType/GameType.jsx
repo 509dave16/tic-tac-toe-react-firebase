@@ -9,7 +9,7 @@ class GameType extends Component {
   onClick(e) {
     this.props.setGameType(e.target.innerText);
   }
-  
+
   render() {
     return (
       <ul>

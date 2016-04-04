@@ -50,7 +50,8 @@ class Game extends Component {
     this.state.grid = grid;
     this.state.showJoinSessionForm = false;
     this.state.session = undefined;
-    this.state.gameStatus = undefined;
+    this.state.gameStatus = 'Please select a game mode!';
+
   }
 
   initializeGrid(size) {
@@ -75,7 +76,7 @@ class Game extends Component {
         </div>
         <h2 className={this.state.session ? '' : 'hidden'}>Session: {this.state.session}</h2>
         <h2 className={this.player ? '' : 'hidden'}>Player: {this.player}</h2>
-        <h2 className={this.state.gameStatus ? '' : 'hidden'}>{this.state.gameStatus}</h2>
+        <h2 className={this.state.gameStatus ? '' : 'hidden'}>Game Status: {this.state.gameStatus}</h2>
         <Grid grid={this.state.grid} attemptTurn={this.attemptTurn}/>
       </div>
     );
@@ -83,7 +84,7 @@ class Game extends Component {
 
   attemptTurn(row, column) {
     const cell = this.state.grid[row][column];
-    if ( this.turn
+    if (this.turn
       && (this.player === this.turn || this.gameType === 'LocalHost')
       && !this.winner
       && !cell.mark) {
@@ -119,13 +120,13 @@ class Game extends Component {
   }
 
   setGameType(gameType) {
-    if(this.gameType) {
+    if (this.gameType) {
       return;
     }
     this.gameType = gameType;
     if (gameType === 'OnlineHost') {
       this.hostSession();
-    } else if( gameType === 'OnlineGuest') {
+    } else if (gameType === 'OnlineGuest') {
       this.setState({showJoinSessionForm: true});
     } else {
       this.turnSwitch(Math.random() > 0.5 ? 'X' : 'O');
@@ -137,7 +138,10 @@ class Game extends Component {
     this.firebase.child('sessions').push({})
       .then((firebaseRef) => {
         this.firebase = firebaseRef;
-        this.setState({session: this.firebase.key()});
+        this.setState({
+          session: this.firebase.key(),
+          gameStatus: 'Waiting for player to join game!'
+        });
         this.setupFirebaseHandlers();
       });
   }
