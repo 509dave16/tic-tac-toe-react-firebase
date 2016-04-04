@@ -12,8 +12,6 @@ class GameType extends Component {
   }
   
   render() {
-
-    console.log(this.props.types);
     return (
       <ul>
         {this.props.types.map((type, index) => {

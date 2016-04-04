@@ -8,15 +8,11 @@ class Grid extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Tic Tac Toe</h1>
-        <h2>{this.gameStatus}</h2>
-        <table>
-          <tbody>
-          {this.renderGrid()}
-          </tbody>
-        </table>
-      </div>
+      <table>
+        <tbody>
+        {this.renderGrid()}
+        </tbody>
+      </table>
     );
   }
 
