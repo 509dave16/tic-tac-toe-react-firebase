@@ -1,12 +1,30 @@
-td
-{
-  width:100px;
-  height:100px;
-  border: 1px solid black;
-  text-align: center;
-  vertical-align: middle;
+$blue-frost-light: #ABD3FF;
+$blue-frost: #7BB9FF;
+$blue-baby-dark: #1483FF;
+$blue: #00438E;
+$blue-navy: #00346D;
+
+@mixin color($color) {
+  color: $color;
+  &-bg {
+    background-color: $color;
+  }
 }
 
-.hidden {
- display: none;
+:global .blue-frost-light { @include color($blue-frost-light); }
+:global .blue-frost { @include color($blue-frost); }
+:global .blue-baby-dark { @include color($blue-baby-dark); }
+:global .blue { @include color($blue); }
+:global .blue-navy { @include color($blue-navy); }
+
+:global body {
+  margin: 0;
+}
+
+:global .viewport-height {
+  height: 100vmin;
+}
+
+:global .margin-top-none {
+  margin-top: 0;
 }

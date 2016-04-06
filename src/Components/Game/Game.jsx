@@ -68,16 +68,18 @@ class Game extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Tic Tac Toe</h1>
-        <GameType types={['OnlineHost','OnlineGuest','LocalHost']} setGameType={this.setGameType}/>
-        <div className={this.state.showJoinSessionForm ? '' : styles.hideElement}>
-          <SessionForm submitHandler={this.joinSession}/>
+      <div className={`viewport-height blue-baby-dark-bg ${styles.rowCentered}`}>
+        <div className={`${styles.container} ${styles.columnCentered}`}>
+          <h1 className="margin-top-none">Tic Tac Toe</h1>
+          <GameType types={['OnlineHost','OnlineGuest','LocalHost']} setGameType={this.setGameType}/>
+          <div className={this.state.showJoinSessionForm ? '' : styles.hideElement}>
+            <SessionForm submitHandler={this.joinSession}/>
+          </div>
+          <h2 className={this.state.session ? '' : styles.hideElement}>Session: {this.state.session}</h2>
+          <h2 className={this.player ? '' : styles.hideElement}>Player: {this.player}</h2>
+          <h2 className={this.state.gameStatus ? '' : styles.hideElement}>Game Status: {this.state.gameStatus}</h2>
+          <Grid grid={this.state.grid} attemptTurn={this.attemptTurn}/>
         </div>
-        <h2 className={this.state.session ? '' : styles.hideElement}>Session: {this.state.session}</h2>
-        <h2 className={this.player ? '' : styles.hideElement}>Player: {this.player}</h2>
-        <h2 className={this.state.gameStatus ? '' : styles.hideElement}>Game Status: {this.state.gameStatus}</h2>
-        <Grid grid={this.state.grid} attemptTurn={this.attemptTurn}/>
       </div>
     );
   }
