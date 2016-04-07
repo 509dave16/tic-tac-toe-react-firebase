@@ -76,9 +76,9 @@ class Game extends Component {
   render() {
     const gameTypes = [this.GameTypes.OnlineHost,this.GameTypes.OnlineGuest,this.GameTypes.LocalGame];
     return (
-      <div className={`viewport-height ${colors.blue_baby_dark_bg} ${styles.rowCentered}`}>
+      <div className={`${styles.rowCentered}`}>
         <div className={`${styles.container} ${styles.columnCentered}`}>
-          <h1 className={`${colors.blue_frost_light} ${styles.mainHeader}`}>Tic Tac Toe</h1>
+          <h1 className={`${styles.mainHeader}`}>Tic Tac Toe</h1>
           <GameType selected={this.state.gameType} types={gameTypes} setGameType={this.setGameType}/>
           <div className={this.state.showJoinSessionForm ? '' : styles.hideElement}>
             <SessionForm submitHandler={this.joinSession}/>

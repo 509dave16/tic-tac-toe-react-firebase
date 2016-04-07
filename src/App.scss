@@ -1,23 +1,10 @@
+@import './Colors.scss';
+
 body {
   margin: 0;
+  background-color: $blue_baby_dark;
 }
 
-:global .viewport-height {
-  height: 100vmax;
-}
-
-:global .margin-top-none {
-  margin-top: 0;
-}
-
-:global .margin-bottom-none {
-  margin-bottom: 0;
-}
-
-:global .margin-none {
-  margin: 0;
-}
-
-:global html {
+html {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
