@@ -1,9 +1,10 @@
 import styles from './GameType.scss';
+import colors from './../../Colors.scss';
+
 import React, {Component} from 'react';
 
 class GameType extends Component {
   constructor(props) {
-    console.log(styles.gameTypeList);
     super(props);
     this.onClick = this.onClick.bind(this);
   }
@@ -14,9 +15,10 @@ class GameType extends Component {
 
   render() {
     return (
-      <div className={styles.gameTypeList}>
+      <div className={`${styles.list} ${this.props.selected ? '' : styles.selectable}`}>
         {this.props.types.map((type, index) => {
-          return <button key={index} onClick={this.onClick}>{type}</button>
+          const selected = this.props.selected === type ? styles.selection : '';
+          return <span className={`${styles.item} ${selected}`} key={index} onClick={this.onClick}>{type}</span>
         })}
       </div>
     );
@@ -24,6 +26,7 @@ class GameType extends Component {
 }
 
 GameType.propTypes = {
+  selected: React.PropTypes.string.isRequired,
   types: React.PropTypes.array.isRequired,
   setGameType: React.PropTypes.func.isRequired
 };
