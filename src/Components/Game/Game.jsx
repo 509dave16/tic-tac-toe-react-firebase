@@ -95,6 +95,10 @@ class Game extends Component {
             </div>
           </div>
           <Grid grid={this.state.grid} attemptTurn={this.attemptTurn}/>
+          <br></br>
+          <h1 className={styles.attributionFooter}>
+            Made with<span className={styles.reactIcon}></span>and<span className={styles.firebaseIcon}></span>!
+          </h1>
         </div>
       </div>
     );

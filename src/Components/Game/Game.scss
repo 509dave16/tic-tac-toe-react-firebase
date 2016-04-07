@@ -32,9 +32,6 @@
   border-bottom-right-radius: 0.20em;
   border-bottom-left-radius: 0.75em;
   border-top-right-radius: 0.75em;
-
-
-
 }
 
 .key {
@@ -70,4 +67,29 @@
       }
     }
   }
+}
+
+.icon {
+  font-size: 16px;
+  height: 8em;
+  width: 8em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.firebaseIcon {
+  background: url("./../../Assets/Images/firebase.png");
+  @extend .icon;
+}
+
+.reactIcon {
+  background: url("./../../Assets/Images/react.png");
+  @extend .icon;
+}
+
+.attributionFooter {
+  display: flex;
+  align-items: center;
+  font-weight: 800;
+  color: $blue_frost_light;
 }
