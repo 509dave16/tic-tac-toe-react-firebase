@@ -1,5 +1,4 @@
 import styles from './Game.scss';
-import colors from './../../Colors.scss';
 import React, {Component} from 'react';
 import Firebase from 'firebase';
 import Cell from '../../Utility/Cell';
@@ -97,7 +96,11 @@ class Game extends Component {
           <Grid grid={this.state.grid} attemptTurn={this.attemptTurn}/>
           <br></br>
           <h1 className={styles.attributionFooter}>
-            Made with<span className={styles.reactIcon}></span>and<span className={styles.firebaseIcon}></span>!
+            Made with
+            <a href="https://facebook.github.io/react/" target="_blank"><div className={styles.reactIcon}></div></a>
+            and
+            <a href="https://www.firebase.com/" target="_blank"><div className={styles.firebaseIcon}></div></a>
+            !
           </h1>
         </div>
       </div>

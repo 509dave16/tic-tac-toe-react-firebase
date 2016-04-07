@@ -70,6 +70,21 @@
   }
 }
 
+
+@mixin scut-link-unstyled {
+  &, &:visited, &:hover, &:active {
+    font-style: inherit;
+    color: inherit;
+    background-color: transparent;
+    font-size: inherit;
+    text-decoration: none;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    font-family: inherit;
+  }
+}
+
 .icon {
   font-size: 16px;
   height: 8em;
@@ -93,4 +108,8 @@
   align-items: center;
   font-weight: 800;
   color: $blue_frost_light;
+}
+
+.attributionFooter > a {
+  @include scut-link-unstyled;
 }
