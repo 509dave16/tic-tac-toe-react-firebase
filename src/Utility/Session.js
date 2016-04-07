@@ -1,4 +1,5 @@
 import Firebase from 'firebase';
+import ComponentUtility from './Component';
 
 class Session {
 
@@ -9,6 +10,9 @@ class Session {
     this.session = undefined;
     this.takeTurnCallback = takeTurnCallback;
     this.turnSwitchCallback = turnSwitchCallback;
+    ComponentUtility.bindHandlers(this, [
+      'hostSession'
+    ]);
   }
 
   onlineTakeTurn(row, column) {
@@ -22,14 +26,14 @@ class Session {
   }
 
   hostSession() {
-    this.player = 'X';
+    let {firebase} = this;
+    let {player} = this;
+    let {session} = this;
     this.firebase.child('sessions').push({})
       .then((firebaseRef) => {
-        this.firebase = firebaseRef;
-        this.setState({
-          session: this.firebase.key(),
-          gameStatus: 'Waiting for player to join game!'
-        });
+        firebase = firebaseRef;
+        player = 'X';
+        session = firebaseRef.key();
         this.setupFirebaseHandlers();
       });
   }
@@ -37,8 +41,6 @@ class Session {
   joinSession(key) {
     this.player = 'O';
     this.session = key;
-    // this.setState({session: key});
-    // this.setState({showJoinSessionForm: false});
     this.firebase = this.firebase.child('sessions').child(key);
     this.setupFirebaseHandlers();
     this.onlineTurnSwitch(Math.random() > 0.5 ? 'X' : 'O');

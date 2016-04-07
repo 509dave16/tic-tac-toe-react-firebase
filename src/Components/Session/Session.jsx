@@ -5,6 +5,7 @@ import styles from './Session.scss';
 class Session extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.utility);
   }
 
   setupHandlers() {
@@ -16,7 +17,9 @@ class Session extends Component {
   onClick(e) {
     e.preventDefault();
     this.props.setShowForm(false);
-    this.utility.joinSession(this.refs.session.value);
+    this.props.utility.joinSession(this.refs.session.value);
+    //console.log(this.props.utility);
+
   }
 
   render() {
@@ -47,7 +50,7 @@ class Session extends Component {
 
 Session.propTypes = {
   utility: React.PropTypes.object.isRequired,
-  showForm: React.PropTypes.boolean.isRequired,
+  showForm: React.PropTypes.bool.isRequired,
   setShowForm: React.PropTypes.func.isRequired
 };
 

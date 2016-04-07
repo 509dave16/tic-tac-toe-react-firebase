@@ -1,11 +1,12 @@
 import styles from './Game.scss';
-import colors from './../../Colors.scss';
+// import colors from './../../Colors.scss';
 import React, {Component} from 'react';
-import Firebase from 'firebase';
+// import Firebase from 'firebase';
 import Cell from '../../Utility/Cell';
 import Grid from '../Grid/Grid';
+import Session from '../Session/Session';
 import GameType from '../GameType/GameType';
-import SessionForm from '../SessionForm/SessionForm';
+// import SessionForm from '../SessionForm/SessionForm';
 import generateSets from '../../Utility/SetGenerator'
 import ComponentUtility from '../../Utility/Component';
 import SessionUtility from './../../Utility/Session';
@@ -20,13 +21,13 @@ class Game extends Component {
 
   setupHandlers() {
     ComponentUtility.bindHandlers(this, [
-      'onlineTakeTurn',
-      'onlineTurnSwitch',
+      // 'onlineTakeTurn',
+      // 'onlineTurnSwitch',
       'attemptTurn',
       'takeTurn',
       'turnSwitch',
       'setGameType',
-      'joinSession',
+      //'joinSession',
       'setShowJoinSessionForm'
     ]);
   }
@@ -36,28 +37,28 @@ class Game extends Component {
     this.winningMessage = " won!";
     this.turn = undefined;
     this.winner = false;
-    this.player = undefined;
+    // this.player = undefined;
     this.movesTaken = 0;
     let url = "https://glowing-fire-9042.firebaseio.com/";
-    this.firebase = new Firebase(url);
-    //this.sessionUtility = new SessionUtility(url, this.takeTurn, this.turnSwitch);
+    //this.firebase = new Firebase(url);
+    this.sessionUtility = new SessionUtility(url, this.takeTurn, this.turnSwitch);
     this.GameTypes = {
       'OnlineHost': 'Online Host',
       'OnlineGuest': 'Online Guest',
       'LocalGame': 'Local Game'
     };
-    this.GameTypeHandlers = {
-      [ this.GameTypes.OnlineHost ] : {takeTurn: this.onlineTakeTurn, turnSwitch: this.onlineTurnSwitch},
-      [ this.GameTypes.OnlineGuest ]: {takeTurn: this.onlineTakeTurn, turnSwitch: this.onlineTurnSwitch},
-      [ this.GameTypes.LocalGame ]: {takeTurn: this.takeTurn, turnSwitch: this.turnSwitch}
-    };
-
-    // let onlineHandlers = {takeTurn: this.sessionUtility.onlineTakeTurn, turnSwitch: this.sessionUtility.onlineTurnSwitch};
     // this.GameTypeHandlers = {
-    //   [ this.GameTypes.OnlineHost ] : onlineHandlers,
-    //   [ this.GameTypes.OnlineGuest ]: onlineHandlers,
+    //   [ this.GameTypes.OnlineHost ] : {takeTurn: this.onlineTakeTurn, turnSwitch: this.onlineTurnSwitch},
+    //   [ this.GameTypes.OnlineGuest ]: {takeTurn: this.onlineTakeTurn, turnSwitch: this.onlineTurnSwitch},
     //   [ this.GameTypes.LocalGame ]: {takeTurn: this.takeTurn, turnSwitch: this.turnSwitch}
     // };
+
+    let onlineHandlers = {takeTurn: this.sessionUtility.onlineTakeTurn, turnSwitch: this.sessionUtility.onlineTurnSwitch};
+    this.GameTypeHandlers = {
+      [ this.GameTypes.OnlineHost ] : onlineHandlers,
+      [ this.GameTypes.OnlineGuest ]: onlineHandlers,
+      [ this.GameTypes.LocalGame ]: {takeTurn: this.takeTurn, turnSwitch: this.turnSwitch}
+    };
   }
 
   initializeState() {
@@ -66,7 +67,7 @@ class Game extends Component {
     generateSets(grid, this.props.size);
     this.state.grid = grid;
     this.state.showJoinSessionForm = false;
-    this.state.session = undefined;
+    // this.state.session = undefined;
     this.state.gameType = '';
     this.state.gameStatus = 'Please select a game mode!';
   }
@@ -91,21 +92,23 @@ class Game extends Component {
     const gameTypes = [this.GameTypes.OnlineHost,this.GameTypes.OnlineGuest,this.GameTypes.LocalGame];
 
     //<Session utility={this.sessionUtliity} showForm={this.state.showJoinSessionForm} setShowForm={setShowJoinSessionForm} />
+    //   <div className={this.show(this.state.session)}>
+    //     <span>Session:</span><span>{this.state.session}</span>
+    //   </div>
+    //   <div className={this.show(this.player)}>
+    //    <span>Player:</span><span>{this.player}</span>
+    //   </div>
+
+    // <div className={this.state.showJoinSessionForm ? '' : styles.hideElement}>
+    //   <SessionForm submitHandler={this.joinSession}/>
+    // </div>
     return (
       <div className={`${styles.rowCentered}`}>
         <div className={`${styles.container} ${styles.columnCentered}`}>
           <h1 className={`${styles.mainHeader}`}>Tic Tac Toe</h1>
           <GameType selected={this.state.gameType} types={gameTypes} setGameType={this.setGameType}/>
-          <div className={this.state.showJoinSessionForm ? '' : styles.hideElement}>
-            <SessionForm submitHandler={this.joinSession}/>
-          </div>
+          <Session utility={this.sessionUtility} showForm={this.state.showJoinSessionForm} setShowForm={this.setShowJoinSessionForm} />
           <div className={`${styles.statusList}`}>
-            <div className={this.show(this.state.session)}>
-              <span>Session:</span><span>{this.state.session}</span>
-            </div>
-            <div className={this.show(this.player)}>
-              <span>Player:</span><span>{this.player}</span>
-            </div>
             <div className={this.show(this.state.gameStatus)}>
               <span>Game Status:</span><span>{this.state.gameStatus}</span>
             </div>
@@ -127,7 +130,7 @@ class Game extends Component {
   attemptTurn(row, column) {
     const cell = this.state.grid[row][column];
     if (this.turn
-      && (this.player === this.turn || this.state.gameType === this.GameTypes.LocalGame)
+      //&& (this.player === this.turn || this.state.gameType === this.GameTypes.LocalGame)
       && !this.winner
       && !cell.mark) {
       this.GameTypeHandlers[this.state.gameType].takeTurn(row, column);
@@ -157,13 +160,13 @@ class Game extends Component {
     this.setState({gameStatus});
   }
 
-  onlineTakeTurn(row, column) {
-    this.firebase.child('move').set({row, column});
-  }
-
-  onlineTurnSwitch(turn) {
-    this.firebase.child('turn').set(turn);
-  }
+  // onlineTakeTurn(row, column) {
+  //   this.firebase.child('move').set({row, column});
+  // }
+  //
+  // onlineTurnSwitch(turn) {
+  //   this.firebase.child('turn').set(turn);
+  // }
 
   setGameType(gameType) {
     if (this.state.gameType) {
@@ -171,7 +174,9 @@ class Game extends Component {
     }
     this.setState({gameType}, (state, props) => {
       if (gameType === this.GameTypes.OnlineHost) {
-        this.hostSession();
+        //this.hostSession();
+        this.setState({gameStatus: 'Waiting for player to join game!'});
+        this.sessionUtility.hostSession();
       } else if (gameType === this.GameTypes.OnlineGuest) {
         this.setShowJoinSessionForm(true);
       } else {
@@ -181,43 +186,43 @@ class Game extends Component {
 
   }
 
-  hostSession() {
-    this.player = 'X';
-    this.firebase.child('sessions').push({})
-      .then((firebaseRef) => {
-        this.firebase = firebaseRef;
-        this.setState({
-          session: this.firebase.key(),
-          gameStatus: 'Waiting for player to join game!'
-        });
-        this.setupFirebaseHandlers();
-      });
-  }
+  // hostSession() {
+  //   this.player = 'X';
+  //   this.firebase.child('sessions').push({})
+  //     .then((firebaseRef) => {
+  //       this.firebase = firebaseRef;
+  //       this.setState({
+  //         session: this.firebase.key(),
+  //         gameStatus: 'Waiting for player to join game!'
+  //       });
+  //       this.setupFirebaseHandlers();
+  //     });
+  // }
 
-  joinSession(key) {
-    this.player = 'O';
-    this.setState({session: key});
-    this.setState({showJoinSessionForm: false});
-    this.firebase = this.firebase.child('sessions').child(key);
-    this.setupFirebaseHandlers();
-    this.onlineTurnSwitch(Math.random() > 0.5 ? 'X' : 'O');
-  }
-
-  setupFirebaseHandlers() {
-    this.firebase.child('move').on('value', (snapshot) => {
-      const move = snapshot.val();
-      if (move) {
-        this.takeTurn(move.row, move.column);
-      }
-    });
-
-    this.firebase.child('turn').on('value', (snapshot) => {
-      const turn = snapshot.val();
-      if (turn) {
-        this.turnSwitch(turn);
-      }
-    });
-  }
+  // joinSession(key) {
+  //   this.player = 'O';
+  //   this.setState({session: key});
+  //   this.setState({showJoinSessionForm: false});
+  //   this.firebase = this.firebase.child('sessions').child(key);
+  //   this.setupFirebaseHandlers();
+  //   this.onlineTurnSwitch(Math.random() > 0.5 ? 'X' : 'O');
+  // }
+  //
+  // setupFirebaseHandlers() {
+  //   this.firebase.child('move').on('value', (snapshot) => {
+  //     const move = snapshot.val();
+  //     if (move) {
+  //       this.takeTurn(move.row, move.column);
+  //     }
+  //   });
+  //
+  //   this.firebase.child('turn').on('value', (snapshot) => {
+  //     const turn = snapshot.val();
+  //     if (turn) {
+  //       this.turnSwitch(turn);
+  //     }
+  //   });
+  // }
 }
 
 Game.propTypes = {
