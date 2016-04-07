@@ -8,6 +8,7 @@ import GameType from '../GameType/GameType';
 import SessionForm from '../SessionForm/SessionForm';
 import generateSets from '../../Utility/SetGenerator'
 import ComponentUtility from '../../Utility/Component';
+import SessionUtility from './../../Utility/Session';
 
 class Game extends Component {
   constructor(props) {
@@ -25,7 +26,8 @@ class Game extends Component {
       'takeTurn',
       'turnSwitch',
       'setGameType',
-      'joinSession'
+      'joinSession',
+      'setShowJoinSessionForm'
     ]);
   }
 
@@ -36,7 +38,9 @@ class Game extends Component {
     this.winner = false;
     this.player = undefined;
     this.movesTaken = 0;
-    this.firebase = new Firebase("https://glowing-fire-9042.firebaseio.com/");
+    let url = "https://glowing-fire-9042.firebaseio.com/";
+    this.firebase = new Firebase(url);
+    //this.sessionUtility = new SessionUtility(url, this.takeTurn, this.turnSwitch);
     this.GameTypes = {
       'OnlineHost': 'Online Host',
       'OnlineGuest': 'Online Guest',
@@ -47,6 +51,13 @@ class Game extends Component {
       [ this.GameTypes.OnlineGuest ]: {takeTurn: this.onlineTakeTurn, turnSwitch: this.onlineTurnSwitch},
       [ this.GameTypes.LocalGame ]: {takeTurn: this.takeTurn, turnSwitch: this.turnSwitch}
     };
+
+    // let onlineHandlers = {takeTurn: this.sessionUtility.onlineTakeTurn, turnSwitch: this.sessionUtility.onlineTurnSwitch};
+    // this.GameTypeHandlers = {
+    //   [ this.GameTypes.OnlineHost ] : onlineHandlers,
+    //   [ this.GameTypes.OnlineGuest ]: onlineHandlers,
+    //   [ this.GameTypes.LocalGame ]: {takeTurn: this.takeTurn, turnSwitch: this.turnSwitch}
+    // };
   }
 
   initializeState() {
@@ -58,7 +69,6 @@ class Game extends Component {
     this.state.session = undefined;
     this.state.gameType = '';
     this.state.gameStatus = 'Please select a game mode!';
-
   }
 
   initializeGrid(size) {
@@ -73,8 +83,14 @@ class Game extends Component {
     return grid;
   }
 
+  setShowJoinSessionForm(condition) {
+    this.setState({showJoinSessionForm: condition});
+  }
+
   render() {
     const gameTypes = [this.GameTypes.OnlineHost,this.GameTypes.OnlineGuest,this.GameTypes.LocalGame];
+
+    //<Session utility={this.sessionUtliity} showForm={this.state.showJoinSessionForm} setShowForm={setShowJoinSessionForm} />
     return (
       <div className={`${styles.rowCentered}`}>
         <div className={`${styles.container} ${styles.columnCentered}`}>
@@ -157,7 +173,7 @@ class Game extends Component {
       if (gameType === this.GameTypes.OnlineHost) {
         this.hostSession();
       } else if (gameType === this.GameTypes.OnlineGuest) {
-        this.setState({showJoinSessionForm: true});
+        this.setShowJoinSessionForm(true);
       } else {
         this.turnSwitch(Math.random() > 0.5 ? 'X' : 'O');
       }
