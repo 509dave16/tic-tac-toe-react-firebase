@@ -1,4 +1,5 @@
 import styles from './Game.scss';
+import colors from './../../Colors.scss';
 import React, {Component} from 'react';
 import Firebase from 'firebase';
 import Cell from '../../Utility/Cell';
@@ -34,12 +35,16 @@ class Game extends Component {
     this.turn = undefined;
     this.winner = false;
     this.player = undefined;
-    this.gameType = undefined;
     this.firebase = new Firebase("https://glowing-fire-9042.firebaseio.com/");
+    this.GameTypes = {
+      'OnlineHost': 'Online Host',
+      'OnlineGuest': 'Online Guest',
+      'LocalGame': 'Local Game'
+    };
     this.GameTypeHandlers = {
-      OnlineGuest: {takeTurn: this.onlineTakeTurn, turnSwitch: this.onlineTurnSwitch},
-      OnlineHost: {takeTurn: this.onlineTakeTurn, turnSwitch: this.onlineTurnSwitch},
-      LocalHost: {takeTurn: this.takeTurn, turnSwitch: this.turnSwitch}
+      [ this.GameTypes.OnlineHost ] : {takeTurn: this.onlineTakeTurn, turnSwitch: this.onlineTurnSwitch},
+      [ this.GameTypes.OnlineGuest ]: {takeTurn: this.onlineTakeTurn, turnSwitch: this.onlineTurnSwitch},
+      [ this.GameTypes.LocalGame ]: {takeTurn: this.takeTurn, turnSwitch: this.turnSwitch}
     };
   }
 
@@ -50,6 +55,7 @@ class Game extends Component {
     this.state.grid = grid;
     this.state.showJoinSessionForm = false;
     this.state.session = undefined;
+    this.state.gameType = '';
     this.state.gameStatus = 'Please select a game mode!';
 
   }
@@ -67,30 +73,43 @@ class Game extends Component {
   }
 
   render() {
+    const gameTypes = [this.GameTypes.OnlineHost,this.GameTypes.OnlineGuest,this.GameTypes.LocalGame];
     return (
-      <div className={`viewport-height blue-baby-dark-bg ${styles.rowCentered}`}>
+      <div className={`viewport-height ${colors.blue_baby_dark_bg} ${styles.rowCentered}`}>
         <div className={`${styles.container} ${styles.columnCentered}`}>
-          <h1 className="margin-top-none">Tic Tac Toe</h1>
-          <GameType types={['OnlineHost','OnlineGuest','LocalHost']} setGameType={this.setGameType}/>
+          <h1 className={`${colors.blue_frost_light} ${styles.mainHeader}`}>Tic Tac Toe</h1>
+          <GameType selected={this.state.gameType} types={gameTypes} setGameType={this.setGameType}/>
           <div className={this.state.showJoinSessionForm ? '' : styles.hideElement}>
             <SessionForm submitHandler={this.joinSession}/>
           </div>
-          <h2 className={this.state.session ? '' : styles.hideElement}>Session: {this.state.session}</h2>
-          <h2 className={this.player ? '' : styles.hideElement}>Player: {this.player}</h2>
-          <h2 className={this.state.gameStatus ? '' : styles.hideElement}>Game Status: {this.state.gameStatus}</h2>
+          <div className={`${styles.statusList}`}>
+            <div className={this.show(this.state.session)}>
+              <span>Session:</span><span>{this.state.session}</span>
+            </div>
+            <div className={this.show(this.player)}>
+              <span>Player:</span><span>{this.player}</span>
+            </div>
+            <div className={this.show(this.state.gameStatus)}>
+              <span>Game Status:</span><span>{this.state.gameStatus}</span>
+            </div>
+          </div>
           <Grid grid={this.state.grid} attemptTurn={this.attemptTurn}/>
         </div>
       </div>
     );
   }
 
+  show(condition) {
+    return condition ? '' : styles.hideElement;
+  }
+
   attemptTurn(row, column) {
     const cell = this.state.grid[row][column];
     if (this.turn
-      && (this.player === this.turn || this.gameType === 'LocalHost')
+      && (this.player === this.turn || this.state.gameType === this.GameTypes.LocalGame)
       && !this.winner
       && !cell.mark) {
-      this.GameTypeHandlers[this.gameType].takeTurn(row, column);
+      this.GameTypeHandlers[this.state.gameType].takeTurn(row, column);
     }
   }
 
@@ -100,7 +119,7 @@ class Game extends Component {
     let {grid} = this.state;
     this.setState({grid});
     if (!this.winner) {
-      this.GameTypeHandlers[this.gameType].turnSwitch(this.turn === "X" ? "O" : "X");
+      this.GameTypeHandlers[this.state.gameType].turnSwitch(this.turn === "X" ? "O" : "X");
     } else {
       let gameStatus = `${this.turn}${this.winningMessage}`;
       this.setState({gameStatus});
@@ -122,17 +141,19 @@ class Game extends Component {
   }
 
   setGameType(gameType) {
-    if (this.gameType) {
+    if (this.state.gameType) {
       return;
     }
-    this.gameType = gameType;
-    if (gameType === 'OnlineHost') {
-      this.hostSession();
-    } else if (gameType === 'OnlineGuest') {
-      this.setState({showJoinSessionForm: true});
-    } else {
-      this.turnSwitch(Math.random() > 0.5 ? 'X' : 'O');
-    }
+    this.setState({gameType}, (state, props) => {
+      if (gameType === this.GameTypes.OnlineHost) {
+        this.hostSession();
+      } else if (gameType === this.GameTypes.OnlineGuest) {
+        this.setState({showJoinSessionForm: true});
+      } else {
+        this.turnSwitch(Math.random() > 0.5 ? 'X' : 'O');
+      }
+    });
+
   }
 
   hostSession() {

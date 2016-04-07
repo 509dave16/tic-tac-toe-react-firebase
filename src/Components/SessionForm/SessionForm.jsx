@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import styles from './SessionForm.scss';
 
 class SessionForm extends Component {
   constructor(props) {
@@ -13,9 +14,9 @@ class SessionForm extends Component {
 
   render() {
     return (
-      <form>
+      <form className={`${styles.sessionForm}`}>
         <input ref='session' type="text"/>
-        <button onClick={this.onClick}>Join Session</button>
+        <button className={`${styles.unselected}`} onClick={this.onClick}>Join Session</button>
       </form>
     );
   }

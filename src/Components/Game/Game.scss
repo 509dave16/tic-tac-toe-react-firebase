@@ -1,5 +1,7 @@
+@import './../../Colors.scss';
+
 .hideElement {
-  display: none;
+  display: none !important;
 }
 
 .container {
@@ -20,4 +22,52 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.mainHeader {
+  font-weight: 800;
+  padding: 0.3335em 0.67em;
+  background-color: $blue_navy;
+  border-top-left-radius: 0.20em;
+  border-bottom-right-radius: 0.20em;
+  border-bottom-left-radius: 0.75em;
+  border-top-right-radius: 0.75em;
+
+
+
+}
+
+.key {
+  border-top-left-radius: 0.25em;
+  border-bottom-left-radius: 0.25em;
+  background-color: $blue_navy;
+  color: $blue_frost_light;
+}
+
+.value {
+  border-top-right-radius: 0.25em;
+  border-bottom-right-radius: 0.25em;
+  color: $blue_frost_light;
+  background-color: $blue;
+}
+
+.statusList {
+  display: flex;
+  flex-direction: column;
+
+  & > div {
+    display: flex;
+    margin-bottom: 0.75em;
+    & > span {
+      &:first-of-type {
+        padding: 0.375em 0.375em;
+        @extend .key;
+
+      }
+      &:last-of-type {
+        padding: 0.375em 0.375em;
+        @extend .value;
+      }
+    }
+  }
 }
