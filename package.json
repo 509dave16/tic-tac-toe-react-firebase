@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server -d --content-base public/ --inline --hot",
+    "sync": "node browsersync.js",
     "deploy": "firebase deploy",
     "build": "webpack -p"
   },
@@ -42,7 +43,10 @@
     "style-loader": "^0.13.1",
     "svg-sprite-loader": "0.0.18",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.14"
+    "webpack": "^1.12.14",
+    "webpack-browsersync": "^1.0.1",
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-hot-middleware": "^2.10.0"
   },
   "author": "David Fall",
   "license": "ISC"
