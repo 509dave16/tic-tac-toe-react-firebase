@@ -35,6 +35,7 @@ class Game extends Component {
     this.turn = undefined;
     this.winner = false;
     this.player = undefined;
+    this.movesTaken = 0;
     this.firebase = new Firebase("https://glowing-fire-9042.firebaseio.com/");
     this.GameTypes = {
       'OnlineHost': 'Online Host',
@@ -114,15 +115,19 @@ class Game extends Component {
   }
 
   takeTurn(row, column) {
+    this.movesTaken++;
     const cell = this.state.grid[row][column];
     this.winner = cell.notify(this.turn);
     let {grid} = this.state;
     this.setState({grid});
-    if (!this.winner) {
-      this.GameTypeHandlers[this.state.gameType].turnSwitch(this.turn === "X" ? "O" : "X");
-    } else {
+    if (this.winner) {
       let gameStatus = `${this.turn}${this.winningMessage}`;
       this.setState({gameStatus});
+    } else if(this.movesTaken === 9) {
+      let gameStatus = `It's a Draw!`;
+      this.setState({gameStatus});
+    } else {
+      this.GameTypeHandlers[this.state.gameType].turnSwitch(this.turn === "X" ? "O" : "X");
     }
   }
 
