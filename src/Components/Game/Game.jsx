@@ -39,8 +39,8 @@ class Game extends Component {
     this.firebase = new Firebase("https://glowing-fire-9042.firebaseio.com/");
     this.firebaseSession = null;
     this.GameTypes = {
-      'OnlineHost': 'Online Host',
-      'OnlineGuest': 'Online Guest',
+      'OnlineHost': 'Host Game',
+      'OnlineGuest': 'Join Game',
       'LocalGame': 'Local Game'
     };
     this.GameTypeHandlers = {
@@ -125,7 +125,7 @@ class Game extends Component {
           <h1 className={`${styles.mainHeader}`}>Tic Tac Toe</h1>
           <GameType selected={this.state.gameType} types={gameTypes} setGameType={this.setGameType}/>
           <div className={this.state.showJoinSessionForm ? '' : styles.hideElement}>
-            <SessionForm submitHandler={this.joinSession}/>
+            <SessionForm submitHandler={this.joinSession} defaultText="Enter Session ID here"/>
           </div>
           <div className={`${styles.statusList}`}>
             <div className={this.show(this.state.session)}>
@@ -160,6 +160,7 @@ class Game extends Component {
     if (!this.state.gameType) {
       return;
     }
+    let showQuit = this.state.gameType === this.GameTypes.OnlineHost || (this.state.gameStatus.indexOf('turn') !== -1) || this.state.finished;
     return (<div className={`${styles.buttonList}`}>
         <button
           className={`${this.show(this.gameTypeHasHandler('restart') && this.state.finished)}`}
@@ -168,7 +169,7 @@ class Game extends Component {
           Restart
         </button>
         <button
-          className={`${this.show(this.gameTypeHasHandler('quit') && (this.state.gameStatus.indexOf('turn') !== -1) || this.state.finished)}`}
+          className={`${this.show(this.gameTypeHasHandler('quit') && showQuit)}`}
           onClick={this.GameTypeHandlers[this.state.gameType]['quit']}
         >
           Quit
