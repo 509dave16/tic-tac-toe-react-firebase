@@ -13,7 +13,6 @@ class Game extends Component {
   constructor(props) {
     super(props);
     this.setupHandlers();
-    //this.initializeVariableMembers();
     this.initializeMembers();
     this.initializeState();
   }
@@ -32,13 +31,6 @@ class Game extends Component {
       'setGameType',
       'joinSession'
     ]);
-  }
-
-  initializeVariableMembers() {
-    //this.turn = undefined;
-    //this.state.finished = false;
-    //this.player = undefined;
-    //this.movesTaken = 0;
   }
 
   initializeMembers() {
@@ -94,7 +86,6 @@ class Game extends Component {
     this.setState({
       grid: grid,
       movesTaken: 0,
-      //showJoinSessionForm: false,
       finished: false
     });
   }
@@ -166,7 +157,7 @@ class Game extends Component {
   }
 
   renderButtons() {
-    if(!this.state.gameType) {
+    if (!this.state.gameType) {
       return;
     }
     return (<div className={`${styles.buttonList}`}>
@@ -205,20 +196,20 @@ class Game extends Component {
     const cell = this.state.grid[row][column];
     const winner = cell.notify(this.state.turn);
     let {grid} = this.state;
-    this.setState({grid, movesTaken});
-    if (winner) {
-      let gameStatus = `${this.state.turn}${this.winningMessage}`;
-      this.setState({gameStatus, finished: true});
-    } else if (this.state.movesTaken === 9) {
-      let gameStatus = `It's a Draw!`;
-      this.setState({gameStatus, finished: true});
-    } else {
-      this.GameTypeHandlers[this.state.gameType].turnSwitch(this.state.turn === "X" ? "O" : "X");
-    }
+    this.setState({grid, movesTaken}, (state, props) => {
+      if (winner) {
+        let gameStatus = `${this.state.turn}${this.winningMessage}`;
+        this.setState({gameStatus, finished: true});
+      } else if (this.state.movesTaken === 9) {
+        let gameStatus = `It's a Draw!`;
+        this.setState({gameStatus, finished: true});
+      } else {
+        this.GameTypeHandlers[this.state.gameType].turnSwitch(this.state.turn === "X" ? "O" : "X");
+      }
+    });
   }
 
   turnSwitch(turn) {
-    // this.turn = turn;
     let gameStatus = `${turn}${this.turnMessage}`;
     this.setState({gameStatus, turn});
   }
@@ -329,10 +320,6 @@ class Game extends Component {
         }
       }
     });
-
-    // this.firebase.child('sessions').on('child_removed', (snapshot) => {
-    //   this.quit();
-    // });
 
     window.onbeforeunload = (e) => {
       console.log('Here!');
