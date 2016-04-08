@@ -46,7 +46,7 @@ This is a frontend wep app for playing Tic Tac Toe that was developed using Reac
 ###4. Join Game
 - Once this game mode has been selected, use a **Session ID** that has been provided by another player to join a game
 <br>
-You must enter a valid **Session ID** other you will receive an alert indicating that it was incorrect
+**NOTE:**You must enter a valid **Session ID** other you will receive an alert indicating that it was incorrect
 <br>
 ![Alt Text](http://s22.postimg.org/4y5fyv2q9/joining_game.png "Missing Image for Joining Game")
 - Once you have joined a game, the **Game Status** will indicates if it is X's turn or O's turn
