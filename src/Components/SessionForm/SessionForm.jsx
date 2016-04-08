@@ -10,6 +10,7 @@ class SessionForm extends Component {
   onClick(e) {
     e.preventDefault();
     this.props.submitHandler(this.refs.session.value);
+    this.refs.session.value = '';
   }
 
   render() {

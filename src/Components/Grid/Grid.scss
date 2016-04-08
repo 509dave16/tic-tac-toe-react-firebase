@@ -17,6 +17,7 @@ td
 table {
   border-collapse: collapse;
   margin-top: 0.75em;
+  margin-bottom: 0.75em;
 }
 
 tr {
@@ -25,7 +26,6 @@ tr {
     border-color: $blue_frost_light;
     border-bottom-width: $table-border-width;
     border-top-width: $table-border-width;
-    //border-image-width: 0;
     &:first-of-type {
       border-right-width: $table-border-width;
       border-left-width: 0;

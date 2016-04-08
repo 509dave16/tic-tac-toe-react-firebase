@@ -4,6 +4,10 @@
   margin-bottom: 0.5em;
 }
 
+.sessionForm > * {
+  font-size: 1.25em;
+}
+
 .selected {
   background-color: $blue_navy;
   color: $blue_frost_light;
