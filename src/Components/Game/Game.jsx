@@ -322,6 +322,12 @@ class Game extends Component {
       }
     });
 
+    this.firebase.child('sessions').on('child_removed', (snapshot) => {
+      if(snapshot.key() === this.state.session) {
+        this.quit();
+      }
+    });
+
     window.onbeforeunload = (e) => {
       console.log('Here!');
       this.firebase.child('sessions').child(this.state.session).remove();
