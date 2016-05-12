@@ -32,7 +32,7 @@ A Tic Tac Toe web app that was developed using React and Firebase along with Web
 - Once a player has joined, the **Game Status** will indicates if it is X's turn or O's turn
 <br>
 ![Alt Text](http://s18.postimg.org/ix7hbbfsp/turn_game_status.png "Missing Image for Game Status")
-- You can **Quit** from the **Game Mode** at any time once the game has started
+- You can **Quit** from the **Game Mode** at any time before or after the game has started
 <br>
 **NOTE:** This will quit the game for the other player as well
 <br>
